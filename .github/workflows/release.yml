@@ -39,7 +39,9 @@ jobs:
       - name: print fastn version
         run: ./target/release/fastn --version
       - name: print file info
-        run: file ./target/release/fastn
+        run: |
+          file ./target/release/fastn
+          ldd ./target/release/fastn
       - uses: actions/upload-artifact@v2
         with:
           name: linux_musl_x86_64
@@ -76,6 +78,7 @@ jobs:
           path: target/release/fastn.exe
   release-windows:
     runs-on: ubuntu-latest
+    needs: [build-windows]
     name: Make installer for windows build
     steps:
     - uses: actions/checkout@v2
@@ -128,7 +131,9 @@ jobs:
       - name: print fastn version
         run: ./target/release/fastn --version
       - name: print file info
-        run: file ./target/release/fastn
+        run: |
+          file ./target/release/fastn
+          otool -L ./target/release/fastn
       - uses: actions/upload-artifact@v4
         with:
           name: macos_x64_latest
